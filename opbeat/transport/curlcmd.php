@@ -6,6 +6,8 @@ class Opbeat_Transport_CurlCmd extends Opbeat_Transport implements Opbeat_Transp
         $endpoint = $this->_base_path . 'organizations/' . $this->_client->getOrganizationID() . '/apps/' . $this->_client->getApplicationID() . '/errors/';
 
         $cmd  = 'curl -X POST ';
+        $cmd .= '-s ' # dont report progress
+        $cmd .= '--connect-timeout 20 -m 40 ' # some timeouts;
         $cmd .= implode(' ', $this->createHeaderArguments());
         $cmd .= " -d '" . $message->build() . "' " . $endpoint;
         $cmd .= " > /dev/null 2>&1 &";
